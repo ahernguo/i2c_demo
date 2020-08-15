@@ -26,21 +26,22 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+	mainwindow.cpp \
+    uimap.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    uimap.h
 
 FORMS += \
         mainwindow.ui
 
 LIBS += \
-        -L"/usr/local/lib" -lwiringPi
+        -L"/usr/local/lib" \
+	-lwiringPi
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-DISTFILES += \
-    README.md
