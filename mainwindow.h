@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QObject>
 #include <QPushButton>
+#include <QScreen>
 #include <QString>
 #include <QTableWidget>
 #include <QTableWidgetItem>

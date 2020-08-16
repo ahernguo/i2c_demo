@@ -5,33 +5,40 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
+	this->ui->setupUi(this);
 
 	/*** initial list ***/
 	this->gpaList = new QList<uimap*>();
 	this->gpbList = new QList<uimap*>();
 
-    /*** create configuration table ***/
-	QTableWidget *table = new QTableWidget(8, 10);
+	/*** create a pointer that point to configuration table ***/
+	auto *table = this->ui->tbMain;
+	/* change style */
+	table->setColumnCount(10);
+	table->setRowCount(8);
+	table->setStyleSheet("QTableWidget { background-color:transparent; } QTableWidget::item { padding: 2px }");	//replace white to transparent
+	table->setShowGrid(false);								//hide grid border
+	table->setFrameStyle(QFrame::NoFrame);					//hide table border
     /* hide header */
 	table->verticalHeader()->hide();
 	table->horizontalHeader()->hide();
-	table->setColumnWidth(0, 30);
-	table->setColumnWidth(1, 30);
-	table->setColumnWidth(2, 30);
-	table->setColumnWidth(3, 60);
-	table->setColumnWidth(4, 50);
-	table->setColumnWidth(5, 50);
-	table->setColumnWidth(6, 60);
-	table->setColumnWidth(7, 30);
-	table->setColumnWidth(8, 30);
-	table->setColumnWidth(9, 30);
+	/* set grid width */
+	table->setColumnWidth(0, 30);	//GPB - State
+	table->setColumnWidth(1, 35);	//GPB - Off
+	table->setColumnWidth(2, 35);	//GPB - On
+	table->setColumnWidth(3, 65);	//GPB - Setting
+	table->setColumnWidth(4, 50);	//GPB - Name
+	table->setColumnWidth(5, 50);	//GPA - Name
+	table->setColumnWidth(6, 65);	//GPA - Setting
+	table->setColumnWidth(7, 35);	//GPA - On
+	table->setColumnWidth(8, 35);	//GPA - Off
+	table->setColumnWidth(9, 30);	//GPA - State
     /* loop for setting cells  */
     for (int idx = 0; idx < 8; idx++) {
-		/* prepare tow rows */
-		auto *gpa = new uimap(1, 7 - idx);
-		auto *gpb = new uimap(2, idx);
-		/* bind */
+		/* prepare two rows */
+		auto *gpa = new uimap(1, 7 - idx);	//the layout of MCP23017 of GPA was reversed. [7..0] from up to bottom
+		auto *gpb = new uimap(2, idx);		//the layout of MCP23017 of GPB was forward. [0..7] from up to bottom
+		/* bind widget to table cell. the direction will decides by group value */
 		gpa->bind(table, idx);
 		gpb->bind(table, idx);
 		/* connect signal and slots */
@@ -41,18 +48,14 @@ MainWindow::MainWindow(QWidget *parent) :
 		this->gpaList->append(gpa);
 		this->gpbList->append(gpb);
     }
-    /* add to layout */
-	ui->gridLayout_2->addWidget(table);
-    table->show();
 
 	/*** reset i2c, initial i2c when 'config' clicked  ***/
 	this->fd = -1;
 	this->bus = -1;
 }
 
-MainWindow::~MainWindow()
-{
-    delete ui;
+MainWindow::~MainWindow() {
+	delete this->ui;
 }
 
 void MainWindow::on_io_clicked(int group, int id, bool onOff) {
@@ -77,8 +80,7 @@ void MainWindow::showEvent(QShowEvent *event) {
 	this->ui->btnUnconfig->click();
 }
 
-void MainWindow::on_btnConfig_clicked()
-{
+void MainWindow::on_btnConfig_clicked() {
 	int gpa = 0, gpb = 0;
 
 	/* disable spinBox */

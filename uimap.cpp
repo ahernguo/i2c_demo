@@ -8,26 +8,24 @@ uimap::uimap(int group, int id, QObject *parent) : QObject(parent) {
 	/* name */
 	this->name = new QLabel();
 	this->name->setText(QString("GP%1%2").arg((group == 1 ? "A" : "B")).arg(id));
-	this->name->setFixedWidth(50);
 	this->name->setAlignment(Qt::AlignCenter);
 	/* state */
 	this->state = new QLabel();
 	this->state->setText(" ");
-	this->state->setFixedWidth(30);
+	this->state->setAlignment(Qt::AlignCenter);
 	/* turnOn */
 	this->turnOn = new QPushButton("On");
 	connect(this->turnOn, SIGNAL(clicked()), this, SLOT(turnOn_clicked()));
-	this->turnOn->setFixedWidth(30);
+	this->turnOn->setStyleSheet("margin: 1px");
 	/* turnOff */
 	this->turnOff = new QPushButton("Off");
 	connect(this->turnOff, SIGNAL(clicked()), this, SLOT(turnOff_clicked()));
-	this->turnOff->setFixedWidth(30);
+	this->turnOff->setStyleSheet("margin: 1px");
 	/* ComboBox */
-	QStringList list = QStringList() << "IN" << "OUT";
+	auto list = QStringList() << "IN" << "OUT";
 	this->setting = new QComboBox();
 	connect(this->setting, SIGNAL(currentIndexChanged(int)), this, SLOT(setting_indexChanged(int)));
 	this->setting->addItems(list);
-	this->setting->setFixedWidth(60);
 	this->setting->setCurrentIndex(1);
 }
 
