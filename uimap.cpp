@@ -11,8 +11,7 @@ uimap::uimap(int group, int id, QObject *parent) : QObject(parent) {
 	this->name->setAlignment(Qt::AlignCenter);
 	/* state */
 	this->state = new QLabel();
-	this->state->setText(" ");
-	this->state->setAlignment(Qt::AlignCenter);
+	this->state->setScaledContents(true);
 	/* turnOn */
 	this->turnOn = new QPushButton("On");
 	connect(this->turnOn, SIGNAL(clicked()), this, SLOT(turnOn_clicked()));
@@ -31,10 +30,16 @@ uimap::uimap(int group, int id, QObject *parent) : QObject(parent) {
 
 void uimap::turnOn_clicked() {
 	emit changeStateClicked(this->group, this->id, true);
+	changeState(this->mask);
+	this->turnOn->setEnabled(false);
+	this->turnOff->setEnabled(true);
 }
 
 void uimap::turnOff_clicked() {
 	emit changeStateClicked(this->group, this->id, false);
+	changeState(0);
+	this->turnOn->setEnabled(true);
+	this->turnOff->setEnabled(false);
 }
 
 void uimap::setting_indexChanged(int index) {
@@ -91,9 +96,16 @@ void uimap::bitMask(int &value) {
 }
 
 void uimap::changeState(int value) {
+	QString path;
 	if ((value & this->mask) == this->mask) {
-		this->state->setText("O");
+		path = ":/images/images/GreenBall.png";
+		this->turnOn->setEnabled(false);
+		this->turnOff->setEnabled(true);
 	} else {
-		this->state->setText("X");
+		path = ":/images/images/GreyBall.png";
+		this->turnOn->setEnabled(true);
+		this->turnOff->setEnabled(false);
 	}
+	QPixmap img(path);
+	this->state->setPixmap(img);
 }

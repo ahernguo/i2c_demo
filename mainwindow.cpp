@@ -106,6 +106,8 @@ void MainWindow::on_btnConfig_clicked() {
 	/* setting i2c */
 	wiringPiI2CWriteReg8(this->fd, 0x00, gpa);	//IODIRA
 	wiringPiI2CWriteReg8(this->fd, 0x01, gpb);	//IODIRB
+	/* refresh current state */
+	on_btnRefresh_clicked();
 }
 
 void MainWindow::on_btnUnconfig_clicked() {
