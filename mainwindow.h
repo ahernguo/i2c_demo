@@ -36,6 +36,10 @@ class MainWindow : public QMainWindow
 
 		void on_btnRefresh_clicked();
 
+		void on_btnAllOff_clicked();
+
+		void on_btnAllOn_clicked();
+
 	protected:
 		void showEvent(QShowEvent *event);
 

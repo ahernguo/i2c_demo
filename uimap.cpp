@@ -11,6 +11,7 @@ uimap::uimap(int group, int id, QObject *parent) : QObject(parent) {
 	this->name->setAlignment(Qt::AlignCenter);
 	/* state */
 	this->state = new QLabel();
+	this->state->setFocusPolicy(Qt::NoFocus);
 	this->state->setScaledContents(true);
 	/* turnOn */
 	this->turnOn = new QPushButton("On");

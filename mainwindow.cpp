@@ -89,6 +89,8 @@ void MainWindow::on_btnConfig_clicked() {
 	this->ui->btnConfig->hide();
 	this->ui->btnUnconfig->show();
 	this->ui->btnRefresh->show();
+	this->ui->btnAllOff->show();
+	this->ui->btnAllOn->show();
 	/* change UI and mask bit */
 	foreach (uimap *map, *this->gpaList) {
 		map->bitMask(gpa);
@@ -117,6 +119,8 @@ void MainWindow::on_btnUnconfig_clicked() {
 	this->ui->btnConfig->show();
 	this->ui->btnUnconfig->hide();
 	this->ui->btnRefresh->hide();
+	this->ui->btnAllOff->hide();
+	this->ui->btnAllOn->hide();
 	/* change ui */
 	foreach (uimap *map, *this->gpaList) {
 		map->settingMode(true);
@@ -137,4 +141,16 @@ void MainWindow::on_btnRefresh_clicked() {
 	foreach (uimap *map, *this->gpbList) {
 		map->changeState(gpb);
 	}
+}
+
+void MainWindow::on_btnAllOff_clicked() {
+	wiringPiI2CWriteReg8(this->fd, 0x12, 0);
+	wiringPiI2CWriteReg8(this->fd, 0x13, 0);
+	on_btnRefresh_clicked();
+}
+
+void MainWindow::on_btnAllOn_clicked() {
+	wiringPiI2CWriteReg8(this->fd, 0x12, 0xFF);
+	wiringPiI2CWriteReg8(this->fd, 0x13, 0xFF);
+	on_btnRefresh_clicked();
 }
